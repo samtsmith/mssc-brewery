@@ -2,12 +2,10 @@ package guru.springframework.msscbrewery.web.controller;
 
 import guru.springframework.msscbrewery.services.CustomerService;
 import guru.springframework.msscbrewery.web.model.CustomerDto;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -29,5 +27,42 @@ public class CustomerController {
         CustomerDto customerDto = customerService.getCustomerById(customerId);
         ResponseEntity<CustomerDto> response = new ResponseEntity<CustomerDto>(customerDto, HttpStatus.OK);
         return response;
+    }
+
+    @PostMapping
+    public ResponseEntity createCustomer(@RequestBody CustomerDto customer) {
+        CustomerDto newCustomer = customerService.createCustomer(customer);
+        String customerLocation = getServiceUrl() + "/" + newCustomer.getId();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", customerLocation);
+
+        ResponseEntity<CustomerDto> response = new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
+        return response;
+    }
+
+    @PutMapping("/{customerId}")
+    public ResponseEntity updateCustomer(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDto customer) {
+        customer.setId(customerId);
+        customerService.updateCustomer(customer);
+        ResponseEntity response = new ResponseEntity(HttpStatus.NO_CONTENT);
+        return response;
+    }
+
+    /*
+     * (non-Javadoc) This implementation show how to use void return with @ResponseStatus annotation
+     */
+    @DeleteMapping("/{customerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCustomer(@PathVariable("customerId") UUID customerId) {
+        customerService.deleteCustomerById(customerId);
+    }
+
+    private String getServiceUrl() {
+        // todo - this should resolve from properties
+        String serviceHost = "http://localhost:8080";
+        String serviceUri = getClass().getAnnotation(RequestMapping.class).value()[0];
+        String serviceUrl = serviceHost + serviceUri;
+        return serviceUrl;
     }
 }

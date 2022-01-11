@@ -5,5 +5,11 @@ import guru.springframework.msscbrewery.web.model.CustomerDto;
 import java.util.UUID;
 
 public interface CustomerService {
-    public CustomerDto getCustomerById(UUID customerId);
+    CustomerDto getCustomerById(UUID customerId);
+
+    CustomerDto createCustomer(CustomerDto customer);
+
+    void updateCustomer(CustomerDto customer);
+
+    void deleteCustomerById(UUID customerId);
 }

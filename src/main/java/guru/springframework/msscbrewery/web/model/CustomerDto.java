@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CustomerDto {
-    @Null
+    @Null // This is one way to make this "read-only" (ie the client can't update this).
     private UUID id;
 
     @NotBlank

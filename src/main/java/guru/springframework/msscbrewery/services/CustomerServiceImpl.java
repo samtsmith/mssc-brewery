@@ -3,6 +3,7 @@ package guru.springframework.msscbrewery.services;
 import guru.springframework.msscbrewery.web.model.CustomerDto;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @Service
@@ -16,7 +17,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto createCustomer(CustomerDto customer) {
+    public CustomerDto createCustomer(@Valid CustomerDto customer) {
         UUID customerId = UUID.randomUUID();
         String customerName = customer.getName();
         return CustomerDto.builder().id(customerId)

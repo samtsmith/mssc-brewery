@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -21,4 +22,10 @@ public class CustomerDto {
     @NotBlank
     @Size(min=3, max=100)
     private String name;
+
+    @Null
+    private OffsetDateTime createdDate;
+
+    @Null
+    private OffsetDateTime lateUpdatedDate;
 }
